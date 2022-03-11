@@ -25,9 +25,4 @@ class Question extends Model
     {
         return $this->hasMany(Answer::class);
     }
-
-    public function getHasAnswerAttribute()
-    {
-        return $this->answers()->where('user_id', auth()->id())->exists();
-    }
 }

@@ -15,13 +15,8 @@ class Authenticate extends Middleware
      */
     protected function redirectTo($request)
     {
-        if (! $request->is('api/*')) {
+        if (! $request->expectsJson()) {
             return route('login');
         }
-        throw new HttpResponseException(response()->json([
-            'errors' => [
-                'error' => 'Unauthorized',
-            ]
-        ])->setStatusCode(403));
     }
 }
