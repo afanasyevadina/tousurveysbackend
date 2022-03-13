@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Question;
 use App\Http\Resources\QuestionResource;
 use App\Http\Resources\QuestionDetailResource;
+use Illuminate\Support\Facades\Validator;
 
 class QuestionController extends Controller
 {
@@ -30,6 +31,26 @@ class QuestionController extends Controller
     
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'text' => ['required', 'string'],
+            'variants' => ['required', 'array'],
+            'variants.*.text' => ['required', 'string'],
+        ]);
+        if($validator->fails()) {
+            return response()->json([
+                'errors' => collect($validator->errors())->map(function($item) {
+                    return $item[0];
+                }),
+            ])->setStatusCode(422);
+        }
+        $question = auth()->user()->questions()->create([
+            'text' => $request->text,
+        ]);
+        foreach($request->variants as $variant) {
+            $question->variants()->create([
+                'text' => $variant['text'],
+            ]);
+        }
+        return response()->noContent()->setStatusCode(201);
     }
 }

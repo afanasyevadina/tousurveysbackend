@@ -12,11 +12,15 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="mb-4">Вопросы</h4>
-                    @forelse($user->questions as $question)
-                    <a href="{{ route('question', $question->id) }}">{{ $question->text }}</a>
-                    @empty
-                    <div class="text-muted">Пока нет вопросов</div>
-                    @endforelse
+                    <ul class="list-group">
+                        @forelse($user->questions as $question)
+                            <li class="list-group-item">
+                                <a href="{{ route('question', $question->id) }}">{{ $question->text }}</a>
+                            </li>
+                        @empty
+                            <li class="list-group-item text-muted">Пока нет вопросов</li>
+                        @endforelse
+                    </ul>
                 </div>
             </div>
         </div>
@@ -24,11 +28,15 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="mb-4">Ответы</h4>
-                    @forelse($user->answers as $answer)
-                    <a href="{{ route('question', $answer->question->id) }}">{{ $answer->question->text }}</a> - {{ $answer->variant->text }}
-                    @empty
-                    <div class="text-muted">Пока нет ответов</div>
-                    @endforelse
+                    <ul class="list-group">
+                        @forelse($user->answers as $answer)
+                        <li class="list-group-item">
+                            <a href="{{ route('question', $answer->question->id) }}">{{ $answer->question->text }}</a> - {{ $answer->variant->text }}
+                            </li>
+                        @empty
+                        <li class="list-group-item text-muted">Пока нет ответов</li>
+                        @endforelse
+                    </ul>
                 </div>
             </div>
         </div>
