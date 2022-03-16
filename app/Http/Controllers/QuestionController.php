@@ -22,4 +22,13 @@ class QuestionController extends Controller
             'question' => $question,
         ]);
     }
+
+    public function destroy($id)
+    {
+        $question = Question::findOrFail($id);
+        $question->answers()->delete();
+        $question->variants()->delete();
+        $question->delete();
+        return redirect()->back();
+    }
 }

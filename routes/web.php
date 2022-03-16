@@ -19,6 +19,8 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users');
     Route::get('/users/{id}', [App\Http\Controllers\UserController::class, 'view'])->name('user');
+    Route::get('/users/{id}/delete', [App\Http\Controllers\UserController::class, 'destroy'])->name('users.delete');
     Route::get('/questions', [App\Http\Controllers\QuestionController::class, 'index'])->name('questions');
     Route::get('/questions/{id}', [App\Http\Controllers\QuestionController::class, 'view'])->name('question');
+    Route::get('/questions/{id}/delete', [App\Http\Controllers\QuestionController::class, 'destroy'])->name('questions.delete');
 });

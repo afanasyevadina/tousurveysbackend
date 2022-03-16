@@ -13,9 +13,9 @@ class QuestionController extends Controller
 {
     public function index()
     {
-        return QuestionResource::collection(Question::latest()->get());
+        return QuestionResource::collection(Question::latest()->paginate(10));
     }
-    
+
     public function show($id)
     {
         $question = Question::find($id);
@@ -28,7 +28,7 @@ class QuestionController extends Controller
         }
         return QuestionDetailResource::make($question);
     }
-    
+
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [

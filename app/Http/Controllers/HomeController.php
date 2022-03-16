@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Answer;
+use App\Models\Question;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -14,6 +17,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        return view('home', [
+            'users' => User::count(),
+            'questions' => Question::count(),
+            'answers' => Answer::count(),
+        ]);
     }
 }

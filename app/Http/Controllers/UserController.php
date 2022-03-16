@@ -22,4 +22,14 @@ class UserController extends Controller
             'user' => $user,
         ]);
     }
+
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+        $user->answers()->delete();
+        foreach ($user->questions as $question) $question->variants()->delete();
+        $user->questions()->delete();
+        $user->delete();
+        return redirect()->back();
+    }
 }
