@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class QuestionResultResource extends JsonResource
@@ -21,6 +22,7 @@ class QuestionResultResource extends JsonResource
                 'id' => $this->user->id,
                 'name' => $this->user->name,
             ],
+            'created_at' => Carbon::create($this->created_at)->toIso8601ZuluString(),
             'variants' => $this->variants->map(function($variant) {
                 return [
                     'id' => $variant->id,
