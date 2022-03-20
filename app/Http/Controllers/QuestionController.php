@@ -31,4 +31,14 @@ class QuestionController extends Controller
         $question->delete();
         return redirect()->back();
     }
+
+    public function massDestroy(Request $request)
+    {
+        foreach(Question::whereIn('id', $request->ids ?? [])->get() as $question) {
+            $question->answers()->delete();
+            $question->variants()->delete();
+            $question->delete();
+        }
+        return redirect()->back();
+    }
 }

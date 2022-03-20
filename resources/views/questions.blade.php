@@ -2,10 +2,21 @@
 
 @section('content')
     <div class="container">
-        <h1 class="mb-4">Questions</h1>
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h1>Questions</h1>
+            <form action="{{ route('questions.mass-delete') }}" method="POST" id="mass-delete" hidden>
+                @csrf
+                <button class="btn btn-primary">Удалить выбранные</button>
+            </form>
+        </div>
         <div class="table-responsive">
             <table class="table table-hover">
                 <tr>
+                    @can('admin')
+                        <th>
+                            <input type="checkbox" id="select-all">
+                        </th>
+                    @endcan
                     <th>#</th>
                     <th>Text</th>
                     <th>Author</th>
@@ -17,6 +28,11 @@
                 </tr>
                 @foreach($questions as $question)
                     <tr>
+                        @can('admin')
+                            <td>
+                                <input type="checkbox" name="ids[]" form="mass-delete" value="{{ $question->id }}">
+                            </td>
+                        @endcan
                         <td>{{ $question->id }}</td>
                         <td>
                             <a href="{{ route('question', $question->id) }}">
@@ -56,5 +72,21 @@
                 </div>
             </div>
         @endforeach
+    @endcan
+@endsection
+@section('scripts')
+    @can('admin')
+        <script>
+            const checkers = document.querySelectorAll('[name="ids[]"]')
+            const toggleBtn = () => document.getElementById('mass-delete').hidden = Array.from(checkers).filter(v => v.checked).length == 0
+            checkers.forEach(check => {
+                check.onchange = toggleBtn
+            })
+
+            document.getElementById('select-all').onchange = e => {
+                checkers.forEach(check => check.checked = e.target.checked)
+                toggleBtn()
+            }
+        </script>
     @endcan
 @endsection
